@@ -1,18 +1,25 @@
 package Commands;
 
+import java.util.Objects;
+
 public class Wc extends Command{
+    String[] validOptions;
+    boolean[] enteredOptions;
     public Wc(String name, String args, String options) {
         super(name, args, options);
+
+        this.validOptions = new String[] {"-l", "-w", "-c"};
+        this.enteredOptions = new boolean[] {false, false, false};
     }
 
     @Override
     public void run() {
-        if(this.getOptions() == null){
-            emptyOption();
-        }
+        handleOptions();
+        start();
     }
 
-    private void emptyOption(){
+    private int[] handleWc(){
+        int[] output = new int[3];
         int lineCount = 1;
         int wordCount = 0;
         int charCount = 0;
@@ -21,8 +28,7 @@ public class Wc extends Command{
         if(!getStdI()){
 
             if(getInput() == null){
-                System.out.println("input yok");
-                return;
+                setInput(" ");
             }
 
             for(int i = 0; i < getInput().length(); i++){
@@ -41,13 +47,57 @@ public class Wc extends Command{
                 charCount++;
             }
 
-            // STDO 0 olduğu için çıktı ekrana gider
-            if(!getStdO()){
-                System.out.print(lineCount + " " + wordCount +  " " + charCount);
-            }
-            else{
-                // STD1 ise pipe'ın outputu alıp diğer komuta atması için değişkene atıyoruz.
-                setOutput(lineCount + " " + wordCount +  " " + charCount);
+            output[0] = lineCount;
+            output[1] = wordCount;
+            output[2] = charCount;
+        }
+
+        return output;
+    }
+
+    private void start(){
+        String out = calculateOutput(handleWc());
+
+        // STDO 0 olduğu için çıktı ekrana gider
+        if(!getStdO()){
+            System.out.println(out);
+        }
+        else{
+            // STD1 ise pipe'ın outputu alıp diğer komuta atması için değişkene atıyoruz.
+            setOutput(out);
+        }
+    }
+
+    private String calculateOutput(int[] output){
+        int lineCount = output[0];
+        int wordCount = output[1];
+        int charCount = output[2];
+
+        String out = "";
+
+        if(this.enteredOptions[0])
+            out += lineCount + " ";
+
+        if(this.enteredOptions[1])
+            out += wordCount + " ";
+
+        if(this.enteredOptions[2])
+            out += charCount + " ";
+
+        if(!this.enteredOptions[0] && !this.enteredOptions[1] && !this.enteredOptions[2]){
+            out = lineCount + " " + wordCount + " " + charCount;
+        }
+
+        return out;
+    }
+
+    private void handleOptions(){
+        for(int i = 0; i < this.validOptions.length; i++){
+            for (String option : this.options) {
+                if (Objects.equals(validOptions[i], option)) {
+                    this.enteredOptions[i] = true;
+                    break;
+                }
             }
         }
     }
