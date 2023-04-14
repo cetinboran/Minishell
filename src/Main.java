@@ -11,5 +11,6 @@ public class Main {
         // Other
         // Bu branch de git atınca gitin branchine gidiyor
         // Sorun yoksa merge at birleşsin master ile
+        // Deneme
     }
 }
