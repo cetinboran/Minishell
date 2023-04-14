@@ -1,5 +1,6 @@
 package Commands;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Echo extends Command {
@@ -15,12 +16,18 @@ public class Echo extends Command {
         // Eğer input var ve pipe yok ise ekrana yaz.
         String output = "";
 
+        if(getArgs() == null){
+            setArgs(new String[] {""});
+        }
+
         if(getStdI()){
             if(!getStdO()){
                 // Ekrana yazıyoruz SDTO 0
                 for(String input: getArgs()){
-                    output += input;
+                    output += input + " ";
                 }
+
+                System.out.println(output);
             }
             else{
                 for(String input: getArgs()){
@@ -38,7 +45,7 @@ public class Echo extends Command {
             }
             else {
                 // Boşluk kaydeder çünkü STD0 1
-                setOutput(" ");
+                setOutput("");
             }
         }
     }

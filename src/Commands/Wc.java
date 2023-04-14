@@ -1,5 +1,6 @@
 package Commands;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Wc extends Command{
@@ -10,6 +11,8 @@ public class Wc extends Command{
 
         this.validOptions = new String[] {"-l", "-w", "-c"};
         this.enteredOptions = new boolean[] {false, false, false};
+
+        setStdI(false);
     }
 
     @Override
@@ -25,7 +28,7 @@ public class Wc extends Command{
         int charCount = 0;
 
         boolean isWord = false;
-        if(!getStdI()){
+        if(getStdI()){
 
             if(getInput() == null){
                 setInput(" ");
@@ -59,7 +62,9 @@ public class Wc extends Command{
         String out = calculateOutput(handleWc());
 
         // STDO 0 olduğu için çıktı ekrana gider
-        if(!getStdO()){
+        // İnput yok ise ekrana yazmasın dedik.
+
+        if(!getStdO() && getStdI()){
             System.out.println(out);
         }
         else{
@@ -92,6 +97,9 @@ public class Wc extends Command{
     }
 
     private void handleOptions(){
+        if(this.options == null)
+            return;
+
         for(int i = 0; i < this.validOptions.length; i++){
             for (String option : this.options) {
                 if (Objects.equals(validOptions[i], option)) {
