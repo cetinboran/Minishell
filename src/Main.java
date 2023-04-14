@@ -15,10 +15,5 @@ public class Main {
             Run run = new Run(text);
             run.run();
         }
-
-        // Other
-        // Bu branch de git atınca gitin branchine gidiyor
-        // Sorun yoksa merge at birleşsin master ile
-        // Deneme
     }
 }
