@@ -14,7 +14,13 @@ public class Run {
     }
 
     public void run(){
+        //System.out.println(Arrays.toString(commands));
+
+
         for(Object x: commands){
+            if(x == null)
+                continue;
+
             if(x.getClass() == Echo.class){
                 ((Echo) x).run();
             }

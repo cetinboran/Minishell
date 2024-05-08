@@ -17,6 +17,7 @@ public class Pipe {
         this.left = left;
 
         setStdO();
+        setStdI();
     }
 
     public void transferOutput(){
@@ -30,7 +31,13 @@ public class Pipe {
     private void setStdO(){
         // pipe'ın solunda stdO'ları 1 yapıyorum ki çıktıları pipe'a yollasın.
         if(left.getClass() != null && left.getClass() != Pipe.class){
-            ((Echo) left).setStdO(true);
+            ((Command) left).setStdO(true);
+        }
+    }
+
+    private void setStdI(){
+        if(right.getClass() != null && right.getClass() != Pipe.class){
+            ((Command) right).setStdI(true);
         }
     }
 

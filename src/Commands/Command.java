@@ -65,7 +65,7 @@ public abstract class Command {
 
     public void setArgs(String[] args) {
         if(args.length == 1 && args[0].length() == 0){
-            this.args = null;
+            this.args = new String[] {" "};
         }
         else
             this.args = args;
